@@ -36,12 +36,19 @@ def test_one_password(browser, password_field, submit_button, password_to_test):
     password_field.clear()
     password_field.send_keys(password_to_test)
     submit_button.click()
+
     try:
-        WebDriverWait(browser, 0.1).until(ec.visibility_of_element_located((By.CLASS_NAME, 'error')))
+        wait.until(ec.visibility_of_element_located((By.ID, 'result-message')))
+    except TimeoutException:
+        print(f"Test case with: '{password_to_test}': CRITICAL FAIL (Сайтът изобщо не реагира)")
+        return True
+
+    error_elements = browser.find_elements(By.CLASS_NAME, 'error')
+
+    if len(error_elements) > 0:
         print(f"Test case with: '{password_to_test}': Fail (Password length is: {len(password_to_test)} symbol/s. )")
         return True
-    except TimeoutException:
-        WebDriverWait(browser, 0.1).until(ec.visibility_of_element_located((By.CLASS_NAME, 'success')))
+    else:
         print(f"Test case with: '{password_to_test}': Pass (Error message not found)")
         return False
 
@@ -52,7 +59,7 @@ def print_failed_passwords(failed_passwords, browser):
     print(f"These are all the passwords that failed: {failed_passwords}")
 
 
-def Password_testing_script(numbers_of_tests):
+def password_testing_script(numbers_of_tests):
     for i in range(int(numbers_of_tests)):
         password_to_test = generate_password()
         result_from_test = test_one_password(browser, password_field, submit_button, password_to_test)
@@ -63,7 +70,6 @@ def Password_testing_script(numbers_of_tests):
 browser = webdriver.Chrome()
 browser.get('https://viktor537.github.io/selenium-password-tester/')
 wait = WebDriverWait(browser, 5)
-
 password_field, submit_button = find_inputs(wait)
 all_failed_passwords = []
-Password_testing_script(10)
+password_testing_script(10)
