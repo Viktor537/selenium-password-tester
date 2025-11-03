@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Тестов сайт за пароли</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+      }
+      h1 {
+        color: #333;
+      }
+      label {
+        display: block;
+        text-align: left;
+        margin-bottom: 5px;
+        color: #555;
+      }
+      #password-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      #submit-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      #submit-btn:hover {
+        background-color: #0056b3;
+      }
+      #result-message {
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        min-height: 25px;
+      }
+      .success {
+        color: #28a745;
+      }
+      .error {
+        color: #dc3545;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Тествай своята парола</h1>
+      <form id="password-form">
+        <label for="password-input">Парола:</label>
+        <input
+          type="password"
+          id="password-input"
+          placeholder="Въведи парола..."
+        />
+        <button type="submit" id="submit-btn">Провери</button>
+      </form>
+      <div id="result-message"></div>
+    </div>
+
+    <script>
+      const passwordForm = document.getElementById("password-form");
+      const passwordInput = document.getElementById("password-input");
+      const submitBtn = document.getElementById("submit-btn");
+      const resultMessage = document.getElementById("result-message");
+
+      passwordForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const password = passwordInput.value;
+        const passwordLength = password.length;
+
+        resultMessage.className = "";
+
+        if (passwordLength < 6) {
+          resultMessage.textContent = "Паролата е твърде къса! (под 6 символа)";
+          resultMessage.classList.add("error");
+        } else if (passwordLength > 24) {
+          resultMessage.textContent =
+            "Паролата е твърде дълга! (над 24 символа)";
+          resultMessage.classList.add("error");
+        } else {
+          resultMessage.textContent = "Паролата е валидна и е приета!";
+          resultMessage.classList.add("success");
+        }
+      });
+    </script>
+  </body>
+</html>
